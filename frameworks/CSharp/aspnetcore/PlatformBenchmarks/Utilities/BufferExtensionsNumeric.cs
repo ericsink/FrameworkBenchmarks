@@ -3,10 +3,8 @@
 
 using System;
 using System.Buffers;
-using System.Buffers.Text;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace PlatformBenchmarks
 {
@@ -15,24 +13,15 @@ namespace PlatformBenchmarks
     // This allows a struct wrapper to turn CountingBufferWriter into a non-shared generic,
     // while still offering the WriteNumeric extension.
 
-    public static class BufferExtensions
+    internal static class BufferExtensionsNumeric
     {
         private const int _maxULongByteLength = 20;
 
         [ThreadStatic]
         private static byte[] _numericBytesScratch;
 
-        internal static void WriteUtf8String<T>(ref this BufferWriter<T> buffer, string text)
-             where T : struct, IBufferWriter<byte>
-        {
-            var byteCount = Encoding.UTF8.GetByteCount(text);
-            buffer.Ensure(byteCount);
-            byteCount = Encoding.UTF8.GetBytes(text.AsSpan(), buffer.Span);
-            buffer.Advance(byteCount);
-        }
-
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static unsafe void WriteNumeric<T>(ref this BufferWriter<T> buffer, uint number)
+        public static unsafe void WriteNumeric<T>(ref this BufferWriter<T> buffer, uint number)
              where T : struct, IBufferWriter<byte>
         {
             const byte AsciiDigitStart = (byte)'0';

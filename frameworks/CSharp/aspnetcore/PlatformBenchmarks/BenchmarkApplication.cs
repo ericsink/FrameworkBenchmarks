@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO.Pipelines;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 using Utf8Json;
@@ -185,7 +184,7 @@ namespace PlatformBenchmarks
                 writer.Write(_fortunesRowStart);
                 writer.WriteNumeric((uint)item.Id);
                 writer.Write(_fortunesColumn);
-                writer.WriteUtf8String(HtmlEncoder.Encode(item.Message));
+                writer.WriteUtf8HtmlString(item.Message);
                 writer.Write(_fortunesRowEnd);
             }
             writer.Write(_fortunesTableEnd);
