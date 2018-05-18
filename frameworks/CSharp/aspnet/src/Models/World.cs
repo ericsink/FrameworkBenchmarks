@@ -2,7 +2,7 @@
 {
     public class World
     {
-        public int id { get; set; }
-        public int randomNumber { get; set; }
+        public int Id { get; set; }
+        public int RandomNumber { get; set; }
     }
 }

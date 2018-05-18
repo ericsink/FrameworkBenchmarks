@@ -36,7 +36,7 @@ namespace Benchmarks.AspNet.Controllers
                 fortunes.AddRange(db.Fortunes);
             }
 
-            fortunes.Add(new Fortune { ID = 0, Message = "Additional fortune added at request time." });
+            fortunes.Add(new Fortune { Id = 0, Message = "Additional fortune added at request time." });
             fortunes.Sort();
 
             Response.Charset = "utf-8";
@@ -55,7 +55,7 @@ namespace Benchmarks.AspNet.Controllers
                     int randomNumber = random.Next(0, 10000) + 1;
                     
                     World world = db.Worlds.Find(randomID);
-                    world.randomNumber = randomNumber;
+                    world.RandomNumber = randomNumber;
                     worlds.Add(world);
                 }
 

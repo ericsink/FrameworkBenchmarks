@@ -53,8 +53,8 @@ namespace Benchmarks.AspNet.Controllers
                             {
                                 worlds.Add(new World
                                 {
-                                    id = reader.GetInt32(0),
-                                    randomNumber = reader.GetInt32(1)
+                                    Id = reader.GetInt32(0),
+                                    RandomNumber = reader.GetInt32(1)
                                 });
                             }
                         }
@@ -84,7 +84,7 @@ namespace Benchmarks.AspNet.Controllers
                         {
                             fortunes.Add(new Fortune
                             {
-                                ID = reader.GetInt32(0),
+                                Id = reader.GetInt32(0),
                                 Message = reader.GetString(1)
                             });
                         }
@@ -92,7 +92,7 @@ namespace Benchmarks.AspNet.Controllers
                 }
             }
             
-            fortunes.Add(new Fortune { ID = 0, Message = "Additional fortune added at request time." });
+            fortunes.Add(new Fortune { Id = 0, Message = "Additional fortune added at request time." });
             fortunes.Sort();
 
             Response.Charset = "utf-8";
@@ -135,8 +135,8 @@ namespace Benchmarks.AspNet.Controllers
                             {
                                 world = new World
                                 {
-                                    id = reader.GetInt32(0),
-                                    randomNumber = reader.GetInt32(1)
+                                    Id = reader.GetInt32(0),
+                                    RandomNumber = reader.GetInt32(1)
                                 };
                             }
                         }
@@ -158,7 +158,7 @@ namespace Benchmarks.AspNet.Controllers
 
                         updateCommand.ExecuteNonQuery();
                         
-                        world.randomNumber = randomNumber;
+                        world.RandomNumber = randomNumber;
                         worlds.Add(world);
                     }
                 }

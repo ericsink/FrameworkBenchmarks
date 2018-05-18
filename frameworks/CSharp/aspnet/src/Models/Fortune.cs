@@ -4,12 +4,12 @@ namespace Benchmarks.AspNet.Models
 {
     public class Fortune : IComparable<Fortune>
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
         public string Message { get; set; }
         
         public int CompareTo(Fortune other)
         {
-            return Message.CompareTo(other.Message);
+            return String.CompareOrdinal(Message, other.Message);
         }
     }
 }

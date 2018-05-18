@@ -7,17 +7,22 @@ CPU_COUNT=$(nproc)
 port_start=9001
 port_end=$(($port_start+$CPU_COUNT))
 
+mkdir --mode=777 /aspnet/sockets
+
 # To debug, use --printlog --verbose --loglevels=All
 for port in $(seq $port_start $port_end); do
-	MONO_OPTIONS=--gc=sgen fastcgi-mono-server4 --applications=/:/aspnet/src --socket=tcp:127.0.0.1:$port &
+    :>> /aspnet/sockets/socket.${port}
+    chmod 666 /aspnet/sockets/socket.${port}
+	MONO_OPTIONS=--gc=sgen fastcgi-mono-server4 --applications=/:/aspnet/src --socket=unix://666@mono/aspnet/sockets/socket.${port} &
 done
+
 
 sleep 5s
 
 # nginx
 conf="upstream mono {\n"
 for port in $(seq $port_start $port_end); do
-  conf+="\tserver 127.0.0.1:${port};\n"
+  conf+="\tserver unix:/aspnet/sockets/socket.${port};\n"
 done
 conf+="}"
 
