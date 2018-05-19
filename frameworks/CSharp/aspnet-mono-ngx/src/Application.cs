@@ -39,6 +39,12 @@ namespace Benchmarks.AspNet
             RouteTable.Routes.Clear();
 
             RouteTable.Routes.MapRoute(
+                name: "Plaintext",
+                url: "plaintext",
+                defaults: new { controller = "Plaintext", action = "Index" }
+            );
+
+            RouteTable.Routes.MapRoute(
                 name: "JSON",
                 url: "json/{action}",
                 defaults: new { controller = "Json", action = "Default" }
@@ -48,7 +54,7 @@ namespace Benchmarks.AspNet
                 name: "WithProviders",
                 url: "{controller}/{providerName}/{action}",
                 defaults: new { action = "Index" },
-                constraints: new { controller = "ado|entityframework", providerName = "mysql|postgresql|sqlserver" }
+                constraints: new { controller = "ado|ef", providerName = "mysql|postgresql|sqlserver" }
             );
 
             RouteTable.Routes.MapRoute(

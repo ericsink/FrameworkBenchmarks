@@ -6,7 +6,7 @@ using Benchmarks.AspNet.Models;
 
 namespace Benchmarks.AspNet.Controllers
 {
-    public class EntityFrameworkController : Controller
+    public class EFController : Controller
     {
         Random random = new Random();
 
