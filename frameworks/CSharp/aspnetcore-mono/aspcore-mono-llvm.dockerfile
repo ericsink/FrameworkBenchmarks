@@ -7,7 +7,7 @@ COPY Benchmarks/appsettings.json ./out/appsettings.json
 FROM mono:5.12.0.226 AS runtime
 # Install Mono llvm
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
-RUN apt install -yqq apt-transport-https
+RUN apt-get install -yqq apt-transport-https
 RUN "deb https://download.mono-project.com/repo/debian nightly-jessie main" | tee /etc/apt/sources.list.d/mono-official-nightly.list
 RUN "deb https://download.mono-project.com/repo/debian preview-jessie main" | tee /etc/apt/sources.list.d/mono-official-preview.list
 RUN apt update -yqq
