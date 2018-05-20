@@ -11,4 +11,4 @@ ENV KestrelTransport Libuv
 WORKDIR /app
 COPY --from=build /app/out ./
 
-ENTRYPOINT ["mono", "--server", "PlatformBenchmarks.exe"]
+ENTRYPOINT ["mono", "--server", "--gc=sgen", "--gc-params=mode=throughput,stack-mark=precise", "PlatformBenchmarks.exe"]
