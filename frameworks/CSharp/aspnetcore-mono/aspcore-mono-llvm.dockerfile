@@ -19,7 +19,7 @@ ENV ASPNETCORE_URLS http://+:8080
 ENV KestrelTransport Libuv
 WORKDIR /app
 COPY --from=build /app/out ./
-
-RUN mono --aot=llvm PlatformBenchmarks.exe
+COPY run-mono-aot.sh run-mono-aot.sh
+RUN bash run-mono-aot.sh
 RUn ls -l
 ENTRYPOINT ["mono", "--server", "--gc=sgen", "--gc-params=mode=throughput", "PlatformBenchmarks.exe"]
