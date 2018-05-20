@@ -20,7 +20,7 @@ ENV KestrelTransport Libuv
 WORKDIR /app
 COPY --from=build /app/out ./
 RUN find /usr/ -name netstandard.dll
-COPY --from=runtime /usr/lib/mono/4.7.1-api/Facades/netstandard.dll ./
+RUN cp /usr/lib/mono/4.7.1-api/Facades/netstandard.dll ./
 RUN mkbundle --fetch-target  mono-5.10.1-debian-9-x64
 RUN mkbundle  --i18n none --cross mono-5.10.1-debian-9-x64 -o PlatformBenchmarks --options --server --options --gc=sgen --options --gc-params=mode=throughput --deps PlatformBenchmarks.exe
 RUn ls -l
