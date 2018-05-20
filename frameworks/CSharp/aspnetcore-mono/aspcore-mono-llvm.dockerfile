@@ -6,7 +6,7 @@ COPY Benchmarks/appsettings.json ./out/appsettings.json
 
 FROM mono:5.12.0.226 AS runtime
 # Install Mono llvm
-RUN apt install apt-transport-https dirmngr
+RUN apt update -yqq && apt install -yqq apt-transport-https dirmngr
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
 RUN echo "deb https://download.mono-project.com/repo/debian nightly-stretch main" | tee /etc/apt/sources.list.d/mono-official-nightly.list
 RUN echo "deb https://download.mono-project.com/repo/debian preview-stretch main" | tee /etc/apt/sources.list.d/mono-official-preview.list
