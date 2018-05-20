@@ -19,6 +19,6 @@ ENV ASPNETCORE_URLS http://+:8080
 ENV KestrelTransport Libuv
 WORKDIR /app
 COPY --from=build /app/out ./
-RUN mkbundle  --i18n none -o PlatformBenchmarks --options --server --options --gc=sgen --options --gc-params=mode=throughput --deps PlatformBenchmarks.exe
+RUN mkbundle  --i18n none --cross mono-5.10.1-debian-9-x64 -o PlatformBenchmarks --options --server --options --gc=sgen --options --gc-params=mode=throughput --deps PlatformBenchmarks.exe
 RUn ls -l
 ENTRYPOINT ["PlatformBenchmarks"]
