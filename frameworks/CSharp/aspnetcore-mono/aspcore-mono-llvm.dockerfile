@@ -22,4 +22,4 @@ COPY --from=build /app/out ./
 
 RUN mono --aot=llvm PlatformBenchmarks.exe
 RUn ls -l
-ENTRYPOINT ["mono", "--aot=llvm", "--server", "--gc=sgen", "--gc-params=mode=throughput", "PlatformBenchmarks.exe"]
+ENTRYPOINT ["mono", "--server", "--gc=sgen", "--gc-params=mode=throughput", "PlatformBenchmarks.exe"]
