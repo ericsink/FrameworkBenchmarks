@@ -1,6 +1,6 @@
 #!/bin/bash
 for filename in ./*.dll; do
-    [ -e "$file" ] || continue
+    [ -e "$filename" ] || continue
 
     mono --aot=llvm "$filename"
 done
