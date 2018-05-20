@@ -11,8 +11,8 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E03280
 RUN echo "deb https://download.mono-project.com/repo/debian nightly-stretch main" | tee /etc/apt/sources.list.d/mono-official-nightly.list
 RUN echo "deb https://download.mono-project.com/repo/debian preview-stretch main" | tee /etc/apt/sources.list.d/mono-official-preview.list
 RUN echo "deb http://ftp.us.debian.org/debian unstable main contrib non-free" >> /etc/apt/sources.list.d/unstable.list
-RUN apt update
-RUN apt-get install libstdc++6 mono-llvm-tools mono-runtime-common mono-gac mono-llvm-support
+RUN apt update -yqq
+RUN apt-get install -yqq libstdc++6 mono-llvm-tools mono-runtime-common mono-gac mono-llvm-support
 RUN dpkg-reconfigure libmono-corlib4.5-cil
 
 ENV ASPNETCORE_URLS http://+:8080
