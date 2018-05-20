@@ -18,6 +18,7 @@ RUN dpkg-reconfigure libmono-corlib4.5-cil
 ENV ASPNETCORE_URLS http://+:8080
 ENV KestrelTransport Libuv
 WORKDIR /app
+RUN find / -name netstandard.dll
 COPY --from=build /usr/share/dotnet/sdk/NuGetFallbackFolder/netstandard.library/2.0.0/build/netstandard2.0/ref/netstandard.dll ./
 COPY --from=build /app/out ./
 RUN mkbundle --fetch-target  mono-5.10.1-debian-9-x64
