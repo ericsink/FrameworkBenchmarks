@@ -7,7 +7,7 @@ WORKDIR /app
 COPY PlatformBenchmarks .
 RUN dotnet publish -c Release -o out -r linux-x64
 
-FROM FROM ubuntu:18.04 AS runtime
+FROM ubuntu:18.04 AS runtime
 WORKDIR /app
 COPY --from=build /app/out ./
 
