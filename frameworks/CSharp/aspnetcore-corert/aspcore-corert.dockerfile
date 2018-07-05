@@ -8,6 +8,8 @@ COPY PlatformBenchmarks .
 RUN dotnet publish -c Release -o out -r linux-x64
 
 FROM ubuntu:16.04 AS runtime
+RUN apt-get update
+RUN apt-get -yqq install libcurl4-openssl
 WORKDIR /app
 COPY --from=build /app/out ./
 
