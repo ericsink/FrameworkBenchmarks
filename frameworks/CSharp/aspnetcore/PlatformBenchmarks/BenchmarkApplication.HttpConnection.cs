@@ -14,6 +14,7 @@ namespace PlatformBenchmarks
 {
     public partial class BenchmarkApplication : IHttpConnection
     {
+        private Task _completedTask = Task.CompletedTask;
         private State _state;
 
         public PipeReader Reader { get; set; }
@@ -50,7 +51,7 @@ namespace PlatformBenchmarks
                 if (!task.IsCompleted)
                 {
                     // No more data in the input
-                    await OnReadCompletedAsync();
+                    await Writer.FlushAsync();
                 }
 
                 var result = await task;
@@ -64,7 +65,11 @@ namespace PlatformBenchmarks
 
                     if (_state == State.Body)
                     {
-                        await ProcessRequestAsync();
+                        var requestTask = ProcessRequestAsync();
+                        if (!ReferenceEquals(requestTask, _completedTask))
+                        {
+                            await requestTask;
+                        }
 
                         _state = State.StartLine;
 
@@ -127,11 +132,6 @@ namespace PlatformBenchmarks
 
         public void OnHeader(Span<byte> name, Span<byte> value)
         {
-        }
-
-        public async ValueTask OnReadCompletedAsync()
-        {
-            await Writer.FlushAsync();
         }
 
         private static HtmlEncoder CreateHtmlEncoder()

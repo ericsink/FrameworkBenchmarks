@@ -102,16 +102,19 @@ namespace PlatformBenchmarks
         public Task ProcessRequestAsync()
         {
             var requestType = _requestType;
-            var task = Task.CompletedTask;
             if (requestType == RequestType.PlainText)
             {
                 PlainText(Writer);
+                return _completedTask;
             }
             else if (requestType == RequestType.Json)
             {
                 Json(Writer);
+                return _completedTask;
             }
-            else if (requestType == RequestType.Fortunes)
+
+            Task task;
+            if (requestType == RequestType.Fortunes)
             {
                 task = Fortunes(Writer);
             }
@@ -130,6 +133,7 @@ namespace PlatformBenchmarks
             else
             {
                 Default(Writer);
+                task = _completedTask;
             }
 
             return task;
