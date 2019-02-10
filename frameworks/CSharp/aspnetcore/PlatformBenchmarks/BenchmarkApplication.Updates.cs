@@ -10,14 +10,14 @@ namespace PlatformBenchmarks
 {
     public partial class BenchmarkApplication
     {
-        private async Task Updates(PipeWriter pipeWriter, int count)
+        private async Task Updates(MemoryWriter output, int count)
         {
-            OutputUpdates(pipeWriter, await Db.LoadMultipleUpdatesRows(count));
+            OutputUpdates(output, await Db.LoadMultipleUpdatesRows(count));
         }
 
-        private static void OutputUpdates(PipeWriter pipeWriter, World[] rows)
+        private static void OutputUpdates(MemoryWriter output, World[] rows)
         {
-            var writer = GetWriter(pipeWriter);
+            var writer = output.GetBufferWriter();
 
             // HTTP 1.1 OK
             writer.Write(_http11OK);

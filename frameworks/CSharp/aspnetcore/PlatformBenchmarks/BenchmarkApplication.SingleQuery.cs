@@ -10,14 +10,14 @@ namespace PlatformBenchmarks
 {
     public partial class BenchmarkApplication
     {
-        private async Task SingleQuery(PipeWriter pipeWriter)
+        private async Task SingleQuery(MemoryWriter output)
         {
-            OutputSingleQuery(pipeWriter, await Db.LoadSingleQueryRow());
+            OutputSingleQuery(output, await Db.LoadSingleQueryRow());
         }
 
-        private static void OutputSingleQuery(PipeWriter pipeWriter, World row)
+        private static void OutputSingleQuery(MemoryWriter output, World row)
         {
-            var writer = GetWriter(pipeWriter);
+            var writer = output.GetBufferWriter();
 
             // HTTP 1.1 OK
             writer.Write(_http11OK);

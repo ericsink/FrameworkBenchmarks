@@ -10,14 +10,14 @@ namespace PlatformBenchmarks
 {
     public partial class BenchmarkApplication
     {
-        private async Task MultipleQueries(PipeWriter pipeWriter, int count)
+        private async Task MultipleQueries(MemoryWriter output, int count)
         {
-            OutputMultipleQueries(pipeWriter, await Db.LoadMultipleQueriesRows(count));
+            OutputMultipleQueries(output, await Db.LoadMultipleQueriesRows(count));
         }
 
-        private static void OutputMultipleQueries(PipeWriter pipeWriter, World[] rows)
+        private static void OutputMultipleQueries(MemoryWriter output, World[] rows)
         {
-            var writer = GetWriter(pipeWriter);
+            var writer = output.GetBufferWriter();
 
             // HTTP 1.1 OK
             writer.Write(_http11OK);

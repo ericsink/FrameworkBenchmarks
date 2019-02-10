@@ -4,7 +4,6 @@
 using System;
 using System.Buffers;
 using System.IO.Pipelines;
-using System.Runtime.CompilerServices;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using System.Threading.Tasks;
@@ -16,8 +15,19 @@ namespace PlatformBenchmarks
     {
         private State _state;
 
-        public PipeReader Reader { get; set; }
-        public PipeWriter Writer { get; set; }
+        public PipeReader Input { get; set; }
+
+        private MemoryWriter Writer { get; set; }
+        private PipeWriter _output;
+        public PipeWriter Output
+        {
+            get => _output;
+            set
+            {
+                _output = value;
+                Writer = new MemoryWriter(value);
+            }
+        }
 
         protected HtmlEncoder HtmlEncoder { get; } = CreateHtmlEncoder();
 
@@ -29,15 +39,15 @@ namespace PlatformBenchmarks
             {
                 await ProcessRequestsAsync();
 
-                Reader.Complete();
+                Input.Complete();
             }
             catch (Exception ex)
             {
-                Reader.Complete(ex);
+                Input.Complete(ex);
             }
             finally
             {
-                Writer.Complete();
+                Output.Complete();
             }
         }
 
@@ -45,7 +55,7 @@ namespace PlatformBenchmarks
         {
             while (true)
             {
-                var task = Reader.ReadAsync();
+                var task = Input.ReadAsync();
 
                 if (!task.IsCompleted)
                 {
@@ -76,7 +86,7 @@ namespace PlatformBenchmarks
                     }
 
                     // No more input or incomplete data, Advance the Reader
-                    Reader.AdvanceTo(buffer.Start, examined);
+                    Input.AdvanceTo(buffer.Start, examined);
                     break;
                 }
             }
@@ -131,7 +141,8 @@ namespace PlatformBenchmarks
 
         public async ValueTask OnReadCompletedAsync()
         {
-            await Writer.FlushAsync();
+            Writer.Commit();
+            await Output.FlushAsync();
         }
 
         private static HtmlEncoder CreateHtmlEncoder()
@@ -151,27 +162,6 @@ namespace PlatformBenchmarks
             StartLine,
             Headers,
             Body
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static BufferWriter<WriterAdapter> GetWriter(PipeWriter pipeWriter)
-            => new BufferWriter<WriterAdapter>(new WriterAdapter(pipeWriter));
-
-        private struct WriterAdapter : IBufferWriter<byte>
-        {
-            public PipeWriter Writer;
-
-            public WriterAdapter(PipeWriter writer)
-                => Writer = writer;
-
-            public void Advance(int count)
-                => Writer.Advance(count);
-
-            public Memory<byte> GetMemory(int sizeHint = 0)
-                => Writer.GetMemory(sizeHint);
-
-            public Span<byte> GetSpan(int sizeHint = 0)
-                => Writer.GetSpan(sizeHint);
         }
 
         private struct ParsingAdapter : IHttpRequestLineHandler, IHttpHeadersHandler

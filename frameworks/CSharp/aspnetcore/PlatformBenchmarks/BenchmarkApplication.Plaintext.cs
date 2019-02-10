@@ -8,9 +8,9 @@ namespace PlatformBenchmarks
 {
     public partial class BenchmarkApplication
     {
-        private static void PlainText(PipeWriter pipeWriter)
+        private static void PlainText(MemoryWriter output)
         {
-            var writer = GetWriter(pipeWriter);
+            var writer = output.GetBufferWriter();
 
             // HTTP 1.1 OK
             writer.Write(_http11OK);

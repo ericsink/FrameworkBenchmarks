@@ -3,7 +3,6 @@
 
 using System;
 using System.Buffers.Text;
-using System.IO.Pipelines;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http;
 
@@ -135,9 +134,9 @@ namespace PlatformBenchmarks
             return task;
         }
 
-        private static void Default(PipeWriter pipeWriter)
+        private static void Default(MemoryWriter output)
         {
-            var writer = GetWriter(pipeWriter);
+            var writer = output.GetBufferWriter();
 
             // HTTP 1.1 OK
             writer.Write(_http11OK);

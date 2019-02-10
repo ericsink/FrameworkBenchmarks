@@ -11,14 +11,14 @@ namespace PlatformBenchmarks
 {
     public partial class BenchmarkApplication
     {
-        private async Task Fortunes(PipeWriter pipeWriter)
+        private async Task Fortunes(MemoryWriter output)
         {
-            OutputFortunes(pipeWriter, await Db.LoadFortunesRows());
+            OutputFortunes(output, await Db.LoadFortunesRows());
         }
 
-        private void OutputFortunes(PipeWriter pipeWriter, List<Fortune> model)
+        private void OutputFortunes(MemoryWriter output, List<Fortune> model)
         {
-            var writer = GetWriter(pipeWriter);
+            var writer = output.GetBufferWriter();
 
             // HTTP 1.1 OK
             writer.Write(_http11OK);
