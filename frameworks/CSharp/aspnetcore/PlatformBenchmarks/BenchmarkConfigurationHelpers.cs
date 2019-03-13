@@ -5,6 +5,7 @@ using System;
 using System.Net;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.AspNetCore.Server.Kestrel.Transport.Abstractions.Internal;
 using Microsoft.Extensions.Configuration;
@@ -82,7 +83,7 @@ namespace PlatformBenchmarks
                 return new IPEndPoint(IPAddress.Loopback, 8080);
             }
 
-            var address = ServerAddress.FromUrl(url);
+            var address = BindingAddress.Parse(url);
 
             IPAddress ip;
 
