@@ -25,7 +25,7 @@
             <Type Name="Microsoft.AspNetCore.HostFiltering.HostFilteringMiddleware" Dynamic="Required All" />
         </Assembly>
         <Assembly Name="Microsoft.AspNetCore.Hosting" Dynamic="Required All" />
-        <Assembly Name="Microsoft.Extensions.Logging.Abstractions">
+        <Assembly Name="Microsoft.Extensions.Logging.Abstractions" Dynamic="Required All">
 
         </Assembly>
         <Assembly Name="Microsoft.Extensions.Logging" Dynamic="Required All">
