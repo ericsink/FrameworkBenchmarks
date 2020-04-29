@@ -5,6 +5,7 @@ using System;
 using System.Net;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 #if DATABASE
 //using Npgsql;
 using MySql.Data.MySqlClient;
@@ -68,6 +69,10 @@ namespace PlatformBenchmarks
 
             var host = new WebHostBuilder()
                 .UseBenchmarksConfiguration(config)
+                .ConfigureLogging((logging) => 
+                {
+                    logging.AddConsole();
+                })
                 .UseKestrel((context, options) =>
                 {
                     var endPoint = context.Configuration.CreateIPEndPoint();
