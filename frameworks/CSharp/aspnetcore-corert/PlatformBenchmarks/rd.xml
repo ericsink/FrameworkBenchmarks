@@ -28,9 +28,11 @@
         <Assembly Name="Microsoft.Extensions.Logging.Abstractions">
 
         </Assembly>
-        <Assembly Name="Microsoft.Extensions.Logging">
-            <Type Name="Microsoft.Extensions.Logging.LoggerFactory" Dynamic="Required All" />
+        <Assembly Name="Microsoft.Extensions.Logging" Dynamic="Required All">
+            <Type Name="Microsoft.Extensions.Logging.LoggerFactory" />
         </Assembly>
+      <Assembly Name="Microsoft.Extensions.Logging.Console" Dynamic="Required All">
+      </Assembly>
         <Assembly Name="System.ComponentModel.TypeConverter">
             <Type Name="System.ComponentModel.TypeConverter" Dynamic="Required All" />
             <Type Name="System.ComponentModel.StringConverter" Dynamic="Required All" />
