@@ -6,7 +6,7 @@ using System.Net;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 #if DATABASE
-using Npgsql;
+//using Npgsql;
 using MySql.Data.MySqlClient;
 #endif
 
@@ -55,11 +55,12 @@ namespace PlatformBenchmarks
             var appSettings = config.Get<AppSettings>();
             Console.WriteLine($"Database: {appSettings.Database}");
 
-            if (appSettings.Database == DatabaseServer.PostgreSql)
-            {
-                BenchmarkApplication.Db = new RawDb(new ConcurrentRandom(), NpgsqlFactory.Instance, appSettings);
-            }
-            else if (appSettings.Database == DatabaseServer.MySql)
+            //if (appSettings.Database == DatabaseServer.PostgreSql)
+            //{
+            //    BenchmarkApplication.Db = new RawDb(new ConcurrentRandom(), NpgsqlFactory.Instance, appSettings);
+            //}
+            //else 
+            if (appSettings.Database == DatabaseServer.MySql)
             {
                 BenchmarkApplication.Db = new RawDb(new ConcurrentRandom(), MySqlClientFactory.Instance, appSettings);
             }

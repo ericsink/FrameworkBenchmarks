@@ -35,6 +35,7 @@
             <Type Name="System.ComponentModel.TypeConverter" Dynamic="Required All" />
             <Type Name="System.ComponentModel.StringConverter" Dynamic="Required All" />
             <Type Name="System.ComponentModel.Int32Converter" Dynamic="Required All" />
+            <Type Name="System.ComponentModel.EnumConverter" Dynamic="Required All" />
         </Assembly>
         <Assembly Name="Microsoft.Extensions.Configuration.Json">
             <Type Name="Microsoft.Extensions.Configuration.Json.JsonConfigurationSource" Dynamic="Required All" />
@@ -42,5 +43,8 @@
         <Assembly Name="RedHat.AspNetCore.Server.Kestrel.Transport.Linux">
             <Type Name="RedHat.AspNetCore.Server.Kestrel.Transport.Linux.LinuxTransportFactory" Dynamic="Required All" />
         </Assembly>
+      
+      <!--<Assembly Name="Npgsql" Dynamic="Required All" />-->
+      <Assembly Name="MySqlConnector" Dynamic="Required All" />
     </Application>
 </Directives>
