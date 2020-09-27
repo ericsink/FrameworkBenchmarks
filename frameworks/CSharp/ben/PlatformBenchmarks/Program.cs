@@ -51,7 +51,7 @@ namespace PlatformBenchmarks
 
             if (appSettings.Database == DatabaseServer.PostgreSql)
             {
-                BenchmarkApplication.Db = new RawDb(new ConcurrentRandom(), appSettings);
+                BenchmarkApplication.Db = new RawDb(appSettings);
             }
             else
             {

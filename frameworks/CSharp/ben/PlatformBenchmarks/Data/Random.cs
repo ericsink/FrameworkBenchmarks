@@ -3,61 +3,84 @@
 
 using System;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace PlatformBenchmarks
 {
     public class ConcurrentRandom
     {
-        private static int nextSeed = 0;
+        private static uint nextSeed = 0;
 
-        // Random isn't thread safe
         [ThreadStatic]
-        private static Random _random;
+        private static ConcurrentRandom _random;
 
-        private static Random Random => _random ?? CreateRandom();
+        private UInt128 _state;
+
+        private static ConcurrentRandom Random => _random ?? CreateRandom();
+
+        private ConcurrentRandom(UInt128 state)
+        {
+            _state = state;
+        }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        private static Random CreateRandom()
+        private static ConcurrentRandom CreateRandom()
         {
-            _random = new Random(Interlocked.Increment(ref nextSeed));
+            var seed = Interlocked.Increment(ref nextSeed);
+            _random = new ConcurrentRandom(new UInt128(splitmix64_stateless(seed + 1), splitmix64_stateless(seed)));
             return _random;
         }
 
-        public int Next(int fromInclusive, int toExclusive)
+        public static int Next() => Random.NextImpl();
+
+        private int NextImpl()
         {
-            // The total possible range is [0, 4,294,967,295).
-            // Subtract one to account for zero being an actual possibility.
-            uint range = (uint)toExclusive - (uint)fromInclusive - 1;
+            // Adapted from https://lemire.me/blog/2019/03/19/the-fastest-conventional-random-number-generator-that-can-pass-big-crush/
 
-            // If there is only one possible choice, nothing random will actually happen, so return
-            // the only possibility.
-            if (range == 0)
-            {
-                return fromInclusive;
-            }
-
-            // Create a mask for the bits that we care about for the range. The other bits will be
-            // masked away.
-            uint mask = range;
-            mask |= mask >> 1;
-            mask |= mask >> 2;
-            mask |= mask >> 4;
-            mask |= mask >> 8;
-            mask |= mask >> 16;
-
-            Span<uint> resultSpan = stackalloc uint[1];
-            uint result;
-
+            const uint mask = 0x3FFF;
+            ulong rand;
             do
             {
-                Random.NextBytes(MemoryMarshal.AsBytes(resultSpan));
-                result = mask & resultSpan[0];
+                _state *= 0xda942042e4dd58b5;
+                rand = _state.High & mask;
             }
-            while (result > range);
+            while (rand > 10_000);
 
-            return (int)result + fromInclusive;
+            return (int)(uint)rand + 1;
+        }
+
+        private static ulong splitmix64_stateless(ulong index)
+        {
+            ulong z = (index + 0x9E3779B97F4A7C15UL);
+            z = (z ^ (z >> 30)) * 0xBF58476D1CE4E5B9UL;
+            z = (z ^ (z >> 27)) * 0x94D049BB133111EBUL;
+            return z ^ (z >> 31);
+        }
+
+        private readonly struct UInt128
+        {
+            public readonly ulong Low;
+            public readonly ulong High;
+
+            public UInt128(ulong low, ulong high)
+            {
+                Low = low;
+                High = high;
+            }
+
+            public static UInt128 operator *(UInt128 left, ulong right)
+            {
+                ulong high = Math.BigMul(left.Low, right, out ulong low);
+                high += (left.High * right);
+                return new UInt128(low, high);
+            }
+
+            //public static UInt128 operator*(UInt128 left, UInt128 right)
+            //{
+            //    ulong high = Math.BigMul(left.Low, right.Low, out ulong low);
+            //    high += (left.High * right.Low) + (left.Low * right.High);
+            //    return new UInt128(low, high);
+            //}
         }
     }
 }

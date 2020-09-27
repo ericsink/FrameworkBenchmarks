@@ -13,7 +13,6 @@ namespace PlatformBenchmarks
 {
     public class RawDb
     {
-        private readonly ConcurrentRandom _random;
         private readonly string _connectionString;
         private readonly MemoryCache _cache = new MemoryCache(
             new MemoryCacheOptions()
@@ -21,9 +20,8 @@ namespace PlatformBenchmarks
                 ExpirationScanFrequency = TimeSpan.FromMinutes(60)
             });
 
-        public RawDb(ConcurrentRandom random, AppSettings appSettings)
+        public RawDb(AppSettings appSettings)
         {
-            _random = random;
             _connectionString = appSettings.ConnectionString;
         }
 
@@ -55,7 +53,7 @@ namespace PlatformBenchmarks
                     for (int i = 0; i < result.Length; i++)
                     {
                         result[i] = await ReadSingleRow(cmd);
-                        idParameter.TypedValue = _random.Next(1, 10001);
+                        idParameter.TypedValue = ConcurrentRandom.Next();
                     }
                 }
             }
@@ -68,10 +66,9 @@ namespace PlatformBenchmarks
             var result = new World[count];
             var cacheKeys = _cacheKeys;
             var cache = _cache;
-            var random = _random;
             for (var i = 0; i < result.Length; i++)
             {
-                var id = random.Next(1, 10001);
+                var id = ConcurrentRandom.Next();
                 var key = cacheKeys[id];
                 var data = cache.Get<CachedWorld>(key);
 
@@ -111,7 +108,7 @@ namespace PlatformBenchmarks
                             var data = await rawdb._cache.GetOrCreateAsync<CachedWorld>(key, create);
                             result[i] = data;
 
-                            id = rawdb._random.Next(1, 10001);
+                            id = ConcurrentRandom.Next();
                             idParameter.TypedValue = id;
                             key = cacheKeys[id];
                         }
@@ -158,7 +155,7 @@ namespace PlatformBenchmarks
                     for (int i = 0; i < results.Length; i++)
                     {
                         results[i] = await ReadSingleRow(queryCmd);
-                        queryParameter.TypedValue = _random.Next(1, 10001);
+                        queryParameter.TypedValue = ConcurrentRandom.Next();
                     }
                 }
 
@@ -169,7 +166,7 @@ namespace PlatformBenchmarks
 
                     for (int i = 0; i < results.Length; i++)
                     {
-                        var randomNumber = _random.Next(1, 10001);
+                        var randomNumber = ConcurrentRandom.Next();
 
                         updateCmd.Parameters.Add(new NpgsqlParameter<int>(parameterName: ids[i], value: results[i].Id));
                         updateCmd.Parameters.Add(new NpgsqlParameter<int>(parameterName: randoms[i], value: randomNumber));
@@ -215,7 +212,7 @@ namespace PlatformBenchmarks
         private (NpgsqlCommand readCmd, NpgsqlParameter<int> idParameter) CreateReadCommand(NpgsqlConnection connection)
         {
             var cmd = new NpgsqlCommand("SELECT id, randomnumber FROM world WHERE id = @Id", connection);
-            var parameter = new NpgsqlParameter<int>(parameterName: "@Id", value: _random.Next(1, 10001));
+            var parameter = new NpgsqlParameter<int>(parameterName: "@Id", value: ConcurrentRandom.Next());
 
             cmd.Parameters.Add(parameter);
 
