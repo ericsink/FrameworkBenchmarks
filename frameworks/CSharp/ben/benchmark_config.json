@@ -44,7 +44,7 @@
     "http": {
       "plaintext_url": "/plaintext",
       "json_url": "/json",
-      "fortunes_url": "/fortunes",
+      "fortune_url": "/fortunes",
       "port": 8080,
       "approach": "Realistic",
       "classification": "Micro",
