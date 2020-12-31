@@ -4,7 +4,7 @@ using Microsoft.Net.Http.Headers;
 using Sql = Npgsql.NpgsqlConnection;
 
 var connection = Environment.GetEnvironmentVariable("DB_CONNECTION");
-var (server, app) = (new HttpServer("http://+:8080"), new HttpApp());
+var (server, app) = (new HttpServer("http://+:8080", webGarden: true), new HttpApp());
 
 app.Get("/plaintext", () => "Hello, World!");
 

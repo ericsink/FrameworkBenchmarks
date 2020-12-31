@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ben.Http" Version="0.0.12" />
+    <PackageReference Include="Ben.Http" Version="0.0.15-test-21" />
     <PackageReference Include="Ben.Http.Generator " Version="0.0.12" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
   </ItemGroup>
 
