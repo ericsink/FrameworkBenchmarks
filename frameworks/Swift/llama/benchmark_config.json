@@ -1,0 +1,23 @@
+{
+  "framework": "llama",
+  "tests": [{
+    "default": {
+      "plaintext_url": "/plaintext",
+      "port": 8080,
+      "approach": "Realistic",
+      "classification": "Micro",
+      "database": "None",
+      "framework": "Llama",
+      "language": "Swift",
+      "orm": "Raw",
+      "platform": ".NET",
+      "flavor": "CoreCLR",
+      "webserver": "Kestrel",
+      "os": "Linux",
+      "database_os": "Linux",
+      "display_name": "Llama",
+      "notes": "",
+      "versus": "aspcore"
+    }
+  }]
+}
