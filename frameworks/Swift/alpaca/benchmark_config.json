@@ -1,0 +1,24 @@
+{
+  "framework": "alpaca",
+  "tests": [{
+    "default": {
+      "plaintext_url": "/plaintext",
+      "json_url": "/json",
+      "port": 8080,
+      "approach": "Realistic",
+      "classification": "Micro",
+      "database": "None",
+      "framework": "Alpaca",
+      "language": "Swift",
+      "orm": "Raw",
+      "platform": ".NET",
+      "flavor": "CoreCLR",
+      "webserver": "Kestrel",
+      "os": "Linux",
+      "database_os": "Linux",
+      "display_name": "Alpaca",
+      "notes": "",
+      "versus": "aspcore"
+    }
+  }]
+}
